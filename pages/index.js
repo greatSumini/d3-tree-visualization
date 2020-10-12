@@ -105,7 +105,11 @@ export default function Home() {
       .lower()
       .attr('stroke', 'white');
 
-    svg.attr('viewBox', autoBox).node();
+    svg
+      .attr('viewBox', autoBox)
+      .attr('xmlns', 'http://www.w3.org/2000/svg')
+      .attr('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+      .node();
   };
 
   const autoBox = () => {
