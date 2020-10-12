@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import * as d3 from 'd3';
 
+import exampleFile from '../example.json';
+
 const WIDTH = 954;
 const RADIUS = WIDTH / 2;
 
@@ -25,8 +27,8 @@ export default function Home() {
     reader.readAsText(event.target.files[0]);
   };
 
-  const render = () => {
-    if (!inputFile) {
+  const render = (file) => {
+    if (!file && !inputFile) {
       alert('파일이 업로드되지 않았습니다.');
       return;
     }
@@ -40,7 +42,7 @@ export default function Home() {
     const svg = d3.select('#svg');
 
     const data = d3
-      .hierarchy(inputFile)
+      .hierarchy(file || inputFile)
       .sort((a, b) => d3.ascending(a.data.name, b.data.name));
     const root = tree(data);
 
@@ -126,6 +128,13 @@ export default function Home() {
         }}
       />
       <button onClick={render}>render</button>
+      <button
+        onClick={() => {
+          render(exampleFile);
+        }}
+      >
+        render example
+      </button>
       <svg id="svg" />
     </Wrapper>
   );
