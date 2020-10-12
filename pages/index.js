@@ -28,8 +28,10 @@ export default function Home() {
       return;
     }
 
-    const data = d3.hierarchy(inputFile).sort((a, b) => d3.ascending(a.data.name, b.data.name));
-    const root = tree(data);
+    document.getElementById('wrapper').removeChild(document.getElementById('svg'));
+    const wrapper = d3.select('#wrapper');
+    wrapper.append("svg")
+          .attr("id", "svg");
 
     const svg = d3.select('#svg');
 
@@ -88,7 +90,7 @@ export default function Home() {
   }
 
   return (
-    <Wrapper>
+    <Wrapper id='wrapper'>
       <StyledLabel htmlFor='file'>upload file</StyledLabel><StyledInput id='file' type='file' accept=".json" onChange={loadFile}/>
       <StyledLabel htmlFor='number'>expandRate</StyledLabel><StyledInput id='number' type="number" value={expandRate} onChange={(e) => {setExpandRate(e.target.value)}}/>
       <button onClick={render}>render</button>
