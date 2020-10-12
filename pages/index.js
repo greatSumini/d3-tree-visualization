@@ -131,7 +131,13 @@ export default function Home() {
           setExpandRate(e.target.value);
         }}
       />
-      <button onClick={render}>render</button>
+      <button
+        onClick={() => {
+          render();
+        }}
+      >
+        render
+      </button>
       <button
         onClick={() => {
           render(exampleFile);
