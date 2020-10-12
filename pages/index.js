@@ -122,7 +122,7 @@ export default function Home() {
     <Wrapper id="wrapper">
       <StyledLabel htmlFor="file">upload file</StyledLabel>
       <StyledInput id="file" type="file" accept=".json" onChange={loadFile} />
-      <StyledLabel htmlFor="number">expandRate</StyledLabel>
+      <StyledLabel htmlFor="number">expand</StyledLabel>
       <StyledInput
         id="number"
         type="number"
