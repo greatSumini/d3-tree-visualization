@@ -10,7 +10,6 @@
   <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="Typescript" />
   <img src="https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
 </p>
-  
 
 ## Introduction
 
@@ -18,6 +17,12 @@
 
 [Live Demo](http://sexy-bochang.now.sh/)
 
+**2021-08-03 추가**<br>
+D3Client를 추가해 리팩토링 해봤습니다. 목적은 다음과 같습니다.
+
+1. 리팩터링 2판에서 읽어본 기법들 적용해보기.
+2. SOLID 규칙을 적용해보기 (특히 Dependency Inversion)
+3. 개발바닥 유튜브에서 향로님이 되도록 Class를 사용해보는게 좋다길래
 
 ## Getting Started
 
@@ -43,5 +48,3 @@ yarn dev
 ## Ref
 
 https://observablehq.com/@d3/radial-tidy-tree
-
-
