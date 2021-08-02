@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
 import * as d3 from 'd3';
 
 import exampleFile from '../example.json';
 
-import { isFreqNode } from '@src/helpers';
+import { cleanFileData, isFreqNode } from '@src/helpers';
 import { TFreqNode } from '@src/types';
 
 const WIDTH = 954;
@@ -20,12 +20,20 @@ export default function Home() {
   const [filename, setFilename] = useState('tree.svg');
   const [expandRate, setExpandRate] = useState(1);
 
-  const loadFile = (event) => {
+  const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files[0];
+
     const reader = new FileReader();
+    reader.readAsText(file);
+    setFilename(file.name.replace('.json', '.svg'));
+
     reader.onload = (sender) => {
-      const result = JSON.parse(
-        (sender.target.result as string).replace(/u'(?=[^:]+')/g, "'")
-      );
+      if (typeof sender.target.result !== 'string') {
+        alert('Wrong Access|');
+        return;
+      }
+
+      const result = JSON.parse(cleanFileData(sender.target.result));
       if (!isFreqNode(result)) {
         alert('Invalid file format');
         return;
@@ -33,8 +41,6 @@ export default function Home() {
 
       setInputFile(result);
     };
-    reader.readAsText(event.target.files[0]);
-    setFilename(event.target.files[0].name.replace('.json', '.svg'));
   };
 
   const render = (file?: TFreqNode) => {
@@ -147,7 +153,12 @@ export default function Home() {
   return (
     <Wrapper id="wrapper">
       <StyledLabel htmlFor="file">upload file</StyledLabel>
-      <StyledInput id="file" type="file" accept=".json" onChange={loadFile} />
+      <StyledInput
+        id="file"
+        type="file"
+        accept=".json"
+        onChange={handleFileInputChange}
+      />
       <StyledLabel htmlFor="number">expand</StyledLabel>
       <StyledInput
         id="number"
