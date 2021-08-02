@@ -1,6 +1,6 @@
 import d3 from 'd3';
 
-import { createSvgObjectUrl } from '../helpers';
+import { createSvgObjectUrl, downloadObjectUrl } from '../helpers';
 import { TFreqNode } from '../types';
 
 const WRAPPER_ID = 'wrapper';
@@ -21,13 +21,7 @@ export class D3Client {
     }
 
     const objectUrl = createSvgObjectUrl(this.svgEle);
-
-    const aEle = document.createElement('a');
-    aEle.href = objectUrl;
-    aEle.download = filename;
-    document.body.appendChild(aEle);
-    aEle.click();
-    document.body.removeChild(aEle);
+    downloadObjectUrl(objectUrl, filename);
   }
 
   get svg() {
