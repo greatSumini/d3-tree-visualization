@@ -1,5 +1,6 @@
 import d3 from 'd3';
 
+import { createSvgObjectUrl } from '../helpers';
 import { TFreqNode } from '../types';
 
 const WRAPPER_ID = 'wrapper';
@@ -15,12 +16,11 @@ export class D3Client {
 
   /** export pre-rendered d3 tree */
   export(filename: string) {
-    const { outerHTML: data } = this.checkSvgEleExists();
+    if (!this.svgEle) {
+      throw new Error('svg element not exists');
+    }
 
-    const blob = new Blob(['<?xml version="1.0" standalone="no"?>\r\n', data], {
-      type: 'image/svg+xml;charset=utf-8',
-    });
-    const objectUrl = URL.createObjectURL(blob);
+    const objectUrl = createSvgObjectUrl(this.svgEle);
 
     const aEle = document.createElement('a');
     aEle.href = objectUrl;
@@ -38,22 +38,12 @@ export class D3Client {
     return document.getElementsByTagName('svg')[0];
   }
 
-  private checkSvgEleExists() {
-    if (!this.svgEle) {
-      throw new Error('svg element not exists');
-    }
-
-    return this.svgEle;
-  }
-
   private createSvg() {
     const wrapper = d3.select(`#${WRAPPER_ID}`);
     wrapper.append('svg').attr('id', this.svgId);
   }
 
   private removeSvg() {
-    this.checkSvgEleExists();
-
     document.getElementById('wrapper').removeChild(this.svgEle);
   }
 }
