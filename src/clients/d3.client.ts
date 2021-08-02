@@ -3,12 +3,12 @@ import d3 from 'd3';
 import { createSvgObjectUrl, downloadObjectUrl } from '../helpers';
 import { TFreqNode } from '../types';
 
-const WRAPPER_ID = 'wrapper';
-
 const DEFAULT_WIDTH = 954;
 const DEFAULT_RADIUS = DEFAULT_WIDTH / 2;
 
 export class D3Client {
+  private static wrapperId = 'wrapper';
+
   constructor(private readonly svgId: string) {}
 
   /** render d3 radial tidy tree by given data */
@@ -33,11 +33,11 @@ export class D3Client {
   }
 
   private createSvg() {
-    const wrapper = d3.select(`#${WRAPPER_ID}`);
+    const wrapper = d3.select(`#${D3Client.wrapperId}`);
     wrapper.append('svg').attr('id', this.svgId);
   }
 
   private removeSvg() {
-    document.getElementById('wrapper').removeChild(this.svgEle);
+    document.getElementById(D3Client.wrapperId).removeChild(this.svgEle);
   }
 }
