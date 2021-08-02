@@ -21,7 +21,7 @@ export default function Home() {
     const reader = new FileReader();
     reader.onload = (sender) => {
       const result = JSON.parse(
-        sender.target.result.replace(/u'(?=[^:]+')/g, "'")
+        (sender.target.result as string).replace(/u'(?=[^:]+')/g, "'")
       );
       setInputFile(result);
     };
@@ -29,7 +29,7 @@ export default function Home() {
     setFilename(event.target.files[0].name.replace('.json', '.svg'));
   };
 
-  const render = (file) => {
+  const render = (file?) => {
     if (!file && !inputFile) {
       alert('파일이 업로드되지 않았습니다.');
       return;
@@ -60,9 +60,9 @@ export default function Home() {
       .attr(
         'd',
         d3
-          .linkRadial()
+          .linkRadial<any, { x: number; y: number }>()
           .angle((d) => d.x)
-          .radius((d) => d.y * expandRate)
+          .radius((d) => d.y * expandRate) as any
       );
 
     svg
@@ -102,22 +102,22 @@ export default function Home() {
       .attr('text-anchor', (d) =>
         d.x < Math.PI === !d.children ? 'start' : 'end'
       )
-      .text((d) => d.data.name)
+      .text((d) => d.data['name'])
       .clone(true)
       .lower()
       .attr('stroke', 'white');
 
     svg
-      .attr('viewBox', autoBox)
+      .attr('viewBox', getViewBox())
       .attr('xmlns', 'http://www.w3.org/2000/svg')
       .attr('xmlns:xlink', 'http://www.w3.org/1999/xlink')
       .node();
   };
 
-  const autoBox = () => {
-    const ele = document.getElementById('svg');
+  const getViewBox = () => {
+    const ele = document.getElementsByTagName('svg')[0];
     const { x, y, width, height } = ele.getBBox();
-    return [x, y, width, height];
+    return [x, y, width, height].join(' ');
   };
 
   const saveSvg = () => {
@@ -146,7 +146,7 @@ export default function Home() {
         type="number"
         value={expandRate}
         onChange={(e) => {
-          setExpandRate(e.target.value);
+          setExpandRate(Number(e.target.value));
         }}
       />
       <button
