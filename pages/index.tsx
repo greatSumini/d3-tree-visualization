@@ -4,6 +4,9 @@ import * as d3 from 'd3';
 
 import exampleFile from '../example.json';
 
+import { isFreqNode } from '@src/helpers';
+import { TFreqNode } from '@src/types';
+
 const WIDTH = 954;
 const RADIUS = WIDTH / 2;
 
@@ -13,7 +16,7 @@ const tree = d3
   .separation((a, b) => (a.parent == b.parent ? 1 : 2) / a.depth);
 
 export default function Home() {
-  const [inputFile, setInputFile] = useState(null);
+  const [inputFile, setInputFile] = useState<TFreqNode>(null);
   const [filename, setFilename] = useState('tree.svg');
   const [expandRate, setExpandRate] = useState(1);
 
@@ -23,13 +26,18 @@ export default function Home() {
       const result = JSON.parse(
         (sender.target.result as string).replace(/u'(?=[^:]+')/g, "'")
       );
+      if (!isFreqNode(result)) {
+        alert('Invalid file format');
+        return;
+      }
+
       setInputFile(result);
     };
     reader.readAsText(event.target.files[0]);
     setFilename(event.target.files[0].name.replace('.json', '.svg'));
   };
 
-  const render = (file?) => {
+  const render = (file?: TFreqNode) => {
     if (!file && !inputFile) {
       alert('파일이 업로드되지 않았습니다.');
       return;
