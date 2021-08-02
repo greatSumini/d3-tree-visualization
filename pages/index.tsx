@@ -6,6 +6,7 @@ import exampleFile from '../example.json';
 
 import { cleanFileData, isFreqNode } from '@src/helpers';
 import { TFreqNode } from '@src/types';
+import { D3Client } from '@src/clients';
 
 const WIDTH = 954;
 const RADIUS = WIDTH / 2;
@@ -19,6 +20,8 @@ export default function Home() {
   const [inputFile, setInputFile] = useState<TFreqNode>(null);
   const [filename, setFilename] = useState('tree.svg');
   const [expandRate, setExpandRate] = useState(1);
+
+  const svgId = 'svg';
 
   const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files[0];
@@ -134,20 +137,8 @@ export default function Home() {
     return [x, y, width, height].join(' ');
   };
 
-  const saveSvg = () => {
-    const svgEl = document.getElementById('svg');
-    var svgData = svgEl.outerHTML;
-    var preface = '<?xml version="1.0" standalone="no"?>\r\n';
-    var svgBlob = new Blob([preface, svgData], {
-      type: 'image/svg+xml;charset=utf-8',
-    });
-    var svgUrl = URL.createObjectURL(svgBlob);
-    var downloadLink = document.createElement('a');
-    downloadLink.href = svgUrl;
-    downloadLink.download = filename;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+  const save = () => {
+    new D3Client(svgId).export(filename);
   };
 
   return (
@@ -182,7 +173,7 @@ export default function Home() {
       >
         render example
       </button>
-      <button onClick={saveSvg}>save file</button>
+      <button onClick={save}>save file</button>
       <svg id="svg" />
     </Wrapper>
   );
