@@ -13,7 +13,7 @@
 
 ## Introduction
 
-정해진 규격의 json을 입력해 Radial Tidy Tree를 렌더링합니다. 미리 입력된 Example 데이터로 렌더링해볼 수도 있습니다. [d3.js](https://www.npmjs.com/package/d3)를 사용했습니다.
+정해진 규격의 json을 입력해 Radial Tidy Tree를 렌더링합니다. 미리 입력된 Example 데이터를 사용해볼 수도 있습니다. [d3.js](https://www.npmjs.com/package/d3)를 사용했습니다.
 
 [Live Demo](http://sexy-bochang.now.sh/)
 
